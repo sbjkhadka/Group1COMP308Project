@@ -4,7 +4,9 @@ import Form from "react-bootstrap/Form";
 import axios from "axios";
 import { withRouter } from "react-router";
 import Toast from "react-bootstrap/Toast";
+import { useHistory } from "react-router-dom";
 function Signup(props) {
+    const history = useHistory();
     const [show, setShow] = useState(false);
     const [toastMessage, setToastMessage] = useState(null);
     const [user, setUser] = useState({
@@ -47,7 +49,7 @@ function Signup(props) {
                  console.log('created_user', result);
                  setToastMessage("User created!");
                  setShow(true);
-               props.history.push("/");
+                 window.location.pathname = "/";
              })
              .catch((error) => {
                  console.log('error_happened', error);

@@ -2,16 +2,45 @@ import React, {useState} from 'react'
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
+import axios from "axios";
+
 function Home() {
+    const [credential, setcredential] = useState({
+      email: "",
+      password: ""
+    });
 
        const onChange = (e) => {
-        //  e.persist();
-        //  setUser({ ...user, [e.target.name]: e.target.value });
+         e.persist();
+         setcredential({ ...credential, [e.target.name]: e.target.value });
        };
 
           const authenticateUser = (e) => {
-            // e.persist();
-            // setUser({ ...user, [e.target.name]: e.target.value });
+            e.persist();
+
+            console.log("current_credentials", credential);
+            // Using absolute URL because it will be absolute in production
+            const apiUrl = "http://localhost:5000/login";
+            const data = {
+              email: credential.email,
+              password: credential.password,
+            };
+            e.preventDefault();
+            console.log("user sent", data);
+            axios
+              .post(apiUrl, data)
+              .then((result) => {
+                console.log("logged_in_successfully", result);
+                // setToastMessage("User created!");
+                // setShow(true);
+                // props.history.push("/");
+              })
+              .catch((error) => {
+                console.log("error_happened", error);
+                // setToastMessage("Something went wrong!");
+                // setShow(true);
+                // setShowLoading(false);
+              });
           };
     return (
       <div className="d-flex justify-content-around align-items-center h-100 p-5 blank-space-filler">
@@ -20,7 +49,7 @@ function Home() {
             Login
           </h1>
 
-          <Form onSubmit={authenticateUser} id="signup-form">
+          <Form onSubmit={authenticateUser}>
             <div className="row">
               <Form.Group className="col-md-12">
                 <Form.Label className="topic-color">Email</Form.Label>
@@ -30,6 +59,7 @@ function Home() {
                   id="email"
                   placeholder="email"
                   onChange={onChange}
+                  required
                 />
               </Form.Group>
             </div>
@@ -43,6 +73,7 @@ function Home() {
                   id="password"
                   placeholder="Password"
                   onChange={onChange}
+                  required
                 />
               </Form.Group>
             </div>

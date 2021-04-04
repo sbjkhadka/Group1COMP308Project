@@ -7,4 +7,5 @@ module.exports = function (app) {
  
 
   app.post("/create", users.create);
+  app.post("/login", users.authenticate);
 };
