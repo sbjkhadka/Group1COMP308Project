@@ -55,7 +55,6 @@ function Signup(props) {
                  console.log('error_happened', error);
                  setToastMessage("Something went wrong!");
                  setShow(true);
-               // setShowLoading(false);
              });
     };
     return (

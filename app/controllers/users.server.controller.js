@@ -72,3 +72,27 @@ exports.authenticate = function (req, res, next) {
     }
   });
 };
+
+exports.isSignedIn = (req, res) => {
+  const token = req.body.authKey;
+  console.log("token_received", token);
+  // if the cookie is not set, return 'auth'
+  if (!token) {
+    // console.log('no_token')
+    return res.send({ screen: "auth" }).end();
+  }
+  var payload;
+  try {
+    payload = jwt.verify(token, jwtKey);
+  } catch (e) {
+    if (e instanceof jwt.JsonWebTokenError) {
+      // the JWT is unauthorized, return a 401 error
+      return res.status(401).end();
+    }
+    // otherwise, return a bad request error
+    return res.status(400).end();
+  }
+
+  // Finally, token is ok, return the username given in the token
+  res.status(200).send({ screen: payload.email }); // need to modify this
+};
