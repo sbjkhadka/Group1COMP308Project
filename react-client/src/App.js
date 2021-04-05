@@ -11,6 +11,8 @@ import RecordVitals from "./components/RecordVitals";
 import MyVitals from './components/MyVitals';
 import ViewPatientVital from './components/ViewPatientVital';
 import SendHealthTips from './components/SendHealthTips';
+import EmergencyAlert from './components/EmergencyAlert';
+import SelfAssessment from './components/SelfAssessment';
 
 function App() {
   const screen = localStorage.getItem('screen');
@@ -40,6 +42,8 @@ function App() {
             <Route render={() => <ViewPatientVital />} path="/viewVitals" />
             <Route render={() => <RecordVitals />} path="/recordMyVitals" />
             <Route render={() => <SendHealthTips />} path="/sendHealthTips" />
+            <Route render={() => <EmergencyAlert />} path="/emergency" />
+            <Route render={() => <SelfAssessment />} path="/assessment" />
           </Router>
         </div>
       </div>

@@ -203,7 +203,11 @@ function Home() {
               </div>
             </div>
           ) : (
-            <div>this is nurses area</div>
+            <div>
+              <img src="https://www.pngitem.com/pimgs/m/643-6437843_page-under-construction-oops-we-are-working-hd.png" /> <br />
+              Put some relevant content to make it look like a home page. Actually, this page does not serve any purpose
+              (Maybe some fact sheet that is required by nurses everyday)
+            </div>
           )}
         </div>
       )}

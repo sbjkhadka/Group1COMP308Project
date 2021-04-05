@@ -7,6 +7,7 @@ import PermMediaIcon from "@material-ui/icons/PermMedia";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import ViewListIcon from "@material-ui/icons/ViewList";
+import DialerSipIcon from "@material-ui/icons/DialerSip";
 export const SidebarData = [
   {
     title: "Home",
@@ -45,9 +46,15 @@ export const SidebarData = [
     accessiblity: "patient",
   },
   {
-    title: "Dashboard",
-    icon: <DashboardIcon />,
-    link: "/dashboard",
+    title: "Send Emergency Alert",
+    icon: <DialerSipIcon />,
+    link: "/emergency",
+    accessiblity: "patient",
+  },
+  {
+    title: "Self Assessment",
+    icon: <DialerSipIcon />,
+    link: "/assessment",
     accessiblity: "patient",
   },
   {
