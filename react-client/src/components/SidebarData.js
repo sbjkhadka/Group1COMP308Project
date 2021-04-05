@@ -6,6 +6,7 @@ import GroupIcon from "@material-ui/icons/Group";
 import PermMediaIcon from "@material-ui/icons/PermMedia";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
+import ViewListIcon from "@material-ui/icons/ViewList";
 export const SidebarData = [
   {
     title: "Home",
@@ -20,10 +21,28 @@ export const SidebarData = [
     accessiblity: "auth",
   },
   {
-    title: "Vitals",
-    icon: <AssessmentIcon />,
-    link: "/vitals",
+    title: "My Vitals",
+    icon: <ViewListIcon />,
+    link: "/myVitals",
+    accessiblity: "patient",
+  },
+  {
+    title: "View Vitals",
+    icon: <ViewListIcon />,
+    link: "/viewVitals",
     accessiblity: "nurse",
+  },
+  {
+    title: "Record New Vitals",
+    icon: <AssessmentIcon />,
+    link: "/createVitals",
+    accessiblity: "nurse",
+  },
+  {
+    title: "Record My Vital",
+    icon: <AssessmentIcon />,
+    link: "/recordMyVitals",
+    accessiblity: "patient",
   },
   {
     title: "Dashboard",
@@ -32,9 +51,9 @@ export const SidebarData = [
     accessiblity: "patient",
   },
   {
-    title: "Friends",
+    title: "Send Health Tips",
     icon: <GroupIcon />,
-    link: "/friends",
+    link: "/sendHealthTips",
     accessiblity: "nurse",
   },
   {

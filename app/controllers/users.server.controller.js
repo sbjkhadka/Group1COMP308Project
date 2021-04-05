@@ -56,7 +56,8 @@ exports.authenticate = function (req, res, next) {
           city: user.city,
           phone: user.phone, 
           province: user.province,
-          userType: user.userType
+          userType: user.userType,
+          id: user._id
         });
 
         req.user = user;
@@ -95,4 +96,20 @@ exports.isSignedIn = (req, res) => {
 
   // Finally, token is ok, return the username given in the token
   res.status(200).send({ screen: payload.email }); // need to modify this
+};
+
+exports.getPatientList = (req, res) => {
+  console.log('getting patient list');
+  User.find({userType:"patient"}, (err, users) => {
+    if (err) {
+        console.log('error_happened');
+      return next(err);
+    } else {
+      res.status(200).send(users);
+    }
+  });
+};
+
+exports.createVitals = (req, res) => {
+  console.log('recCon', req.body);
 };

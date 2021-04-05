@@ -6,7 +6,8 @@ function Logout() {
     localStorage.removeItem("authKey");
     localStorage.removeItem("loggedIn");
     localStorage.removeItem("loggedInName");
-    localStorage.removeItem("screen");
+    localStorage.setItem("screen", "auth");
+    localStorage.removeItem("loggedInId");
     window.location.pathname = "/";
   }, []); //only the first render
   return (

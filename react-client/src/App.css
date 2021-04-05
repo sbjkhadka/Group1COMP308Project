@@ -81,5 +81,14 @@ body {
   background-color: #156EAC;
 }
 .blank-space-filler {
-  background-color: lavender;
+  /* background-color: lavender; */
+}
+#auth {
+  background-color: white;
+}
+#patient {
+  background-color: #ecf7fc ;
+}
+#nurse {
+  background-color: #f6fef6 ;
 }
