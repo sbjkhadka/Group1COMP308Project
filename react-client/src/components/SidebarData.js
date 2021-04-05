@@ -8,6 +8,7 @@ import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import DialerSipIcon from "@material-ui/icons/DialerSip";
+import WbIncandescentIcon from "@material-ui/icons/WbIncandescent";
 export const SidebarData = [
   {
     title: "Home",
@@ -53,7 +54,7 @@ export const SidebarData = [
   },
   {
     title: "Self Assessment",
-    icon: <DialerSipIcon />,
+    icon: <WbIncandescentIcon />,
     link: "/assessment",
     accessiblity: "patient",
   },
