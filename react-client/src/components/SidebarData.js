@@ -29,7 +29,7 @@ export const SidebarData = [
     title: "Dashboard",
     icon: <DashboardIcon />,
     link: "/dashboard",
-    accessiblity: "student",
+    accessiblity: "patient",
   },
   {
     title: "Friends",
@@ -41,7 +41,7 @@ export const SidebarData = [
     title: "Logout",
     icon: <PowerSettingsNewIcon />,
     link: "/logout",
-    accessiblity: "auth",
+    accessiblity: "logout",
   },
 ];
 
