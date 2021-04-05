@@ -5,36 +5,62 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import GroupIcon from "@material-ui/icons/Group";
 import PermMediaIcon from "@material-ui/icons/PermMedia";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
+import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
+import ViewListIcon from "@material-ui/icons/ViewList";
 export const SidebarData = [
   {
     title: "Home",
     icon: <HomeIcon />,
     link: "/",
+    accessiblity: "auth",
   },
   {
     title: "Sign up",
     icon: <PersonAddIcon />,
     link: "/signup",
+    accessiblity: "auth",
   },
   {
-    title: "Vitals",
+    title: "My Vitals",
+    icon: <ViewListIcon />,
+    link: "/myVitals",
+    accessiblity: "patient",
+  },
+  {
+    title: "View Vitals",
+    icon: <ViewListIcon />,
+    link: "/viewVitals",
+    accessiblity: "nurse",
+  },
+  {
+    title: "Record New Vitals",
     icon: <AssessmentIcon />,
-    link: "/vitals",
+    link: "/createVitals",
+    accessiblity: "nurse",
+  },
+  {
+    title: "Record My Vital",
+    icon: <AssessmentIcon />,
+    link: "/recordMyVitals",
+    accessiblity: "patient",
   },
   {
     title: "Dashboard",
     icon: <DashboardIcon />,
     link: "/dashboard",
+    accessiblity: "patient",
   },
   {
-    title: "Friends",
+    title: "Send Health Tips",
     icon: <GroupIcon />,
-    link: "/friends",
+    link: "/sendHealthTips",
+    accessiblity: "nurse",
   },
   {
-    title: "Images",
-    icon: <PermMediaIcon />,
-    link: "/images",
+    title: "Logout",
+    icon: <PowerSettingsNewIcon />,
+    link: "/logout",
+    accessiblity: "logout",
   },
 ];
 

@@ -56,7 +56,8 @@ exports.authenticate = function (req, res, next) {
           city: user.city,
           phone: user.phone, 
           province: user.province,
-          userType: user.userType
+          userType: user.userType,
+          id: user._id
         });
 
         req.user = user;
@@ -71,4 +72,44 @@ exports.authenticate = function (req, res, next) {
       }
     }
   });
+};
+
+exports.isSignedIn = (req, res) => {
+  const token = req.body.authKey;
+  console.log("token_received", token);
+  // if the cookie is not set, return 'auth'
+  if (!token) {
+    // console.log('no_token')
+    return res.send({ screen: "auth" }).end();
+  }
+  var payload;
+  try {
+    payload = jwt.verify(token, jwtKey);
+  } catch (e) {
+    if (e instanceof jwt.JsonWebTokenError) {
+      // the JWT is unauthorized, return a 401 error
+      return res.status(401).end();
+    }
+    // otherwise, return a bad request error
+    return res.status(400).end();
+  }
+
+  // Finally, token is ok, return the username given in the token
+  res.status(200).send({ screen: payload.email }); // need to modify this
+};
+
+exports.getPatientList = (req, res) => {
+  console.log('getting patient list');
+  User.find({userType:"patient"}, (err, users) => {
+    if (err) {
+        console.log('error_happened');
+      return next(err);
+    } else {
+      res.status(200).send(users);
+    }
+  });
+};
+
+exports.createVitals = (req, res) => {
+  console.log('recCon', req.body);
 };
