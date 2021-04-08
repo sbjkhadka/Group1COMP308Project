@@ -114,49 +114,16 @@ exports.createVitals = (req, res) => {
   console.log('recCon', req.body);
 };
 
-const prepareTestingDataFromRequest = (data) => {
-  const { age, sex, steroid, antivirals, fatigue, malaise, anorexia, liverBig, liverFirm, spleenPalpable, 
-    spiders, ascites, varices, bilirubin, alkPhosphate, sgot, albumin, protime, histology } = data;
-
-  return [
-    parseInt(age),
-    sex === "F" ? 2 : 1,
-    steroid ? 2 : 1,
-    antivirals ? 2 : 1,
-    fatigue ? 2 : 1,
-    malaise ? 2 : 1,
-    anorexia ? 2 : 1,
-    liverBig ? 2 : 1,
-    liverFirm ? 2 : 1,
-    spleenPalpable ? 2 : 1,
-    spiders ? 2 : 1,
-    ascites ? 2 : 1,
-    varices ? 2 : 1,
-    parseFloat(bilirubin),
-    parseInt(alkPhosphate),
-    parseInt(sgot),
-    parseFloat(albumin),
-    parseInt(protime),
-    histology ? 2 : 1
-  ];
-}
-
+// AI functionality
 exports.trainAndPredictHepatitis = function (req, res) {
   const testingData = prepareTestingDataFromRequest(req.body);
-  console.log(testingData);
-  
-  // const sepallength = parseFloat(req.body.sepallength);
-  // const sepalwidth = parseFloat(req.body.sepalwidth);
-  // const petallength = parseFloat(req.body.petallength);
-  // const petalwidth = parseFloat(req.body.petalwidth);
-  // const epoch = parseFloat(req.body.epoch);
-  // const lr = parseFloat(req.body.lr);
+  console.log("Prepare testingData: ", testingData);
 
   const tf = require('@tensorflow/tfjs');
   require('@tensorflow/tfjs-node');
   // load training data
   const hep = require('../../hep_train.json');
-  const hepTesting = require('../../hep_test.json');
+  // const hepTesting = require('../../hep_test.json');
 
   // tensor of features for training data
   console.log('trainingData');
@@ -264,7 +231,7 @@ exports.trainAndPredictHepatitis = function (req, res) {
       const startTime = Date.now()
       await model.fit(trainingData, outputData,
           {
-              epochs: 100,
+              epochs: 500,
               callbacks: {
                   onEpochEnd: async (epoch, log) => {
                       console.log(`Epoch ${epoch}: loss = ${log.loss}`);
@@ -289,3 +256,33 @@ exports.trainAndPredictHepatitis = function (req, res) {
   //
 
 };
+
+// Convert the payload to the ML model data
+const prepareTestingDataFromRequest = (data) => {
+  const { age, sex, steroid, antivirals, fatigue, malaise, anorexia, liverBig, liverFirm, spleenPalpable, 
+    spiders, ascites, varices, bilirubin, alkPhosphate, sgot, albumin, protime, histology } = data;
+
+  // Map sex - 1: Male(M) 2: Female(F)
+  // Map checkboxes - 1: False 2: True 
+  return [
+    parseInt(age),
+    sex === "F" ? 2 : 1,
+    steroid ? 2 : 1,
+    antivirals ? 2 : 1,
+    fatigue ? 2 : 1,
+    malaise ? 2 : 1,
+    anorexia ? 2 : 1,
+    liverBig ? 2 : 1,
+    liverFirm ? 2 : 1,
+    spleenPalpable ? 2 : 1,
+    spiders ? 2 : 1,
+    ascites ? 2 : 1,
+    varices ? 2 : 1,
+    parseFloat(bilirubin),
+    parseInt(alkPhosphate),
+    parseInt(sgot),
+    parseFloat(albumin),
+    parseInt(protime),
+    histology ? 2 : 1
+  ];
+}

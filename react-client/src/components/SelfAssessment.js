@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import { Route, Switch, useRouteMatch, useHistory } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import Toast from "react-bootstrap/Toast";
 import SelfAssessmentResult from "./SelfAssessmentResult";
 
 export default function SelfAssessment() {
   let { url } = useRouteMatch();
   const [symptoms, setSymptoms] = useState({
     age: null,
-    sex: null,
+    sex: "M",
     steroid: false,
     antivirals: false,
     fatigue: false,
@@ -37,7 +36,7 @@ export default function SelfAssessment() {
   );
 }
 
-function AssessmentForm({useSymptoms}) {
+function AssessmentForm({ useSymptoms }) {
   const [symptoms, setSymptoms] = useSymptoms();
   let { url } = useRouteMatch();
   const history = useHistory();
@@ -45,7 +44,7 @@ function AssessmentForm({useSymptoms}) {
   const handleOnSubmit = (event) => {
     event.preventDefault();
     history.push({
-      pathname: `${url}/result`
+      pathname: `${url}/result`,
     });
   };
 
@@ -296,16 +295,7 @@ function AssessmentForm({useSymptoms}) {
             </Form.Group>
           </div>
 
-          <Button
-            variant="danger"
-            type="submit"
-            className="col-md-12"
-            // onClick={() =>
-            //   history.push({
-            //     pathname: `${url}/result`,
-            //   })
-            // }
-          >
+          <Button variant="danger" type="submit" className="col-md-12">
             Predict
           </Button>
         </Form>
