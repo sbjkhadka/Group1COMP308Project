@@ -113,3 +113,179 @@ exports.getPatientList = (req, res) => {
 exports.createVitals = (req, res) => {
   console.log('recCon', req.body);
 };
+
+const prepareTestingDataFromRequest = (data) => {
+  const { age, sex, steroid, antivirals, fatigue, malaise, anorexia, liverBig, liverFirm, spleenPalpable, 
+    spiders, ascites, varices, bilirubin, alkPhosphate, sgot, albumin, protime, histology } = data;
+
+  return [
+    parseInt(age),
+    sex === "F" ? 2 : 1,
+    steroid ? 2 : 1,
+    antivirals ? 2 : 1,
+    fatigue ? 2 : 1,
+    malaise ? 2 : 1,
+    anorexia ? 2 : 1,
+    liverBig ? 2 : 1,
+    liverFirm ? 2 : 1,
+    spleenPalpable ? 2 : 1,
+    spiders ? 2 : 1,
+    ascites ? 2 : 1,
+    varices ? 2 : 1,
+    parseFloat(bilirubin),
+    parseInt(alkPhosphate),
+    parseInt(sgot),
+    parseFloat(albumin),
+    parseInt(protime),
+    histology ? 2 : 1
+  ];
+}
+
+exports.trainAndPredictHepatitis = function (req, res) {
+  const testingData = prepareTestingDataFromRequest(req.body);
+  console.log(testingData);
+  
+  // const sepallength = parseFloat(req.body.sepallength);
+  // const sepalwidth = parseFloat(req.body.sepalwidth);
+  // const petallength = parseFloat(req.body.petallength);
+  // const petalwidth = parseFloat(req.body.petalwidth);
+  // const epoch = parseFloat(req.body.epoch);
+  // const lr = parseFloat(req.body.lr);
+
+  const tf = require('@tensorflow/tfjs');
+  require('@tensorflow/tfjs-node');
+  // load training data
+  const hep = require('../../hep_train.json');
+  const hepTesting = require('../../hep_test.json');
+
+  // tensor of features for training data
+  console.log('trainingData');
+  const trainingData = tf.tensor2d(hep.map(item => [
+      item.Age,
+      item.Sex,
+      item.Steroid,
+      item.Antivirals,
+      item.Fatigue,
+      item.Malaise,
+      item.Anorexia,
+      item.Liver_big,
+      item.Liver_firm,
+      item.Spleen_palpable,
+      item.Spiders,
+      item.Ascites,
+      item.Varices,
+      item.Bilurubin,
+      item.Alk_phosphate,
+      item.Sgot,
+      item.Albumin,
+      item.Protime,
+      item.Histology
+  ]))
+  //
+  //tensor of output for training data
+  //console.log(trainingData.dataSync())
+  //
+  //tensor of output for training data
+  //the values for species will be:
+  // Die_Live 1:       1,0
+  // Die_Live 2:       0,1
+  const outputData = tf.tensor2d(hep.map(item => [
+      item.Die_Live === 1 ? 1 : 0,
+      item.Die_Live === 2 ? 1 : 0
+  ]))
+  //console.log(outputData.dataSync())
+
+  //
+  //tensor of features for testing data
+  const testingData2d = tf.tensor2d([testingData]);
+  // const testingData = tf.tensor2d(hepTesting.map(item => [
+  //     item.Age,
+  //     item.Sex,
+  //     item.Steroid,
+  //     item.Antivirals,
+  //     item.Fatigue,
+  //     item.Malaise,
+  //     item.Anorexia,
+  //     item.Liver_big,
+  //     item.Liver_firm,
+  //     item.Spleen_palpable,
+  //     item.Spiders,
+  //     item.Ascites,
+  //     item.Varices,
+  //     item.Bilurubin,
+  //     item.Alk_phosphate,
+  //     item.Sgot,
+  //     item.Albumin,
+  //     item.Protime,
+  //     item.Histology
+  // ]))
+  // console.log(testingData.dataSync())
+  // testingData.array().then(array => {
+  //     console.log(array)
+  // })
+
+  // build neural network using a sequential model
+  const model = tf.sequential()
+  //add the first layer
+  model.add(tf.layers.dense({
+      inputShape: [19], // 19 input neurons (features)
+      activation: "sigmoid",
+      units: 30, //dimension of output space (first hidden layer)
+  }))
+  //add the first hidden layer
+  model.add(tf.layers.dense({
+      inputShape: [30], //dimension of hidden layer (2/3 rule)
+      activation: "sigmoid",
+      units: 15, //dimension of final output (die or live)
+  }))
+  //add the first hidden layer
+  model.add(tf.layers.dense({
+      inputShape: [15], //dimension of hidden layer (2/3 rule)
+      activation: "sigmoid",
+      units: 2, //dimension of final output (die or live)
+  }))
+  //add output layer
+  model.add(tf.layers.dense({
+      activation: "sigmoid",
+      units: 2, //dimension of final output
+  }))
+  //compile the model with an MSE loss function and Adam algorithm
+  model.compile({
+      //categoricalCrossentropy
+      loss: "meanSquaredError",
+      optimizer: tf.train.adam(.003),
+      metrics: ['accuracy'],
+  })
+  console.log(model.summary())
+  // train/fit the model for the fixed number of epochs
+  const startTime = Date.now()
+  //
+  async function run() {
+      const startTime = Date.now()
+      await model.fit(trainingData, outputData,
+          {
+              epochs: 100,
+              callbacks: {
+                  onEpochEnd: async (epoch, log) => {
+                      console.log(`Epoch ${epoch}: loss = ${log.loss}`);
+                      elapsedTime = Date.now() - startTime;
+                      console.log('elapsed time: ' + elapsedTime)
+                  }
+              }
+          }
+
+      ) //fit
+      //
+      const results = model.predict(testingData2d);
+      results.print()
+      // get the values from the tf.Tensor
+      //var tensorData = results.dataSync();
+      results.array().then(array => {
+        console.log("result", array[0]);
+        res.status(200).send(array[0]);
+      })
+  } //end of run function
+  run()
+  //
+
+};
