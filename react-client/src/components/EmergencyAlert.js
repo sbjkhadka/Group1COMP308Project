@@ -3,7 +3,7 @@ import axios from "axios";
 import { Spinner, Jumbotron, Form, Button, ButtonGroup, ButtonToolbar, Dropdown } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 
-function SendEmergencyAlert(props) {
+function EmergencyAlert(props) {
 
   // initial values for an alert
   const [alert, setAlert] = useState({
@@ -101,4 +101,4 @@ function SendEmergencyAlert(props) {
   );
 }
 
-export default withRouter(SendEmergencyAlert);
+export default withRouter(EmergencyAlert);
