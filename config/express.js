@@ -13,9 +13,7 @@ const cors = require("cors");
 module.exports = function () {
   //Create the Express application object
   var app = express();
-  //the process.env property allows you to access predefined environment variables
-  //such as NODE_ENV
-  // Use the 'NDOE_ENV' variable to activate the 'morgan' logger or 'compress' middleware
+ 
   if (process.env.NODE_ENV === "development") {
     app.use(morgan("dev"));
   } else if (process.env.NODE_ENV === "production") {
@@ -39,14 +37,10 @@ module.exports = function () {
   });
   app.use(cors());
   //
-  app.use(methodOverride()); // use HTTP verbs such as PUT or DELETE in places where the client doesn't support it.
-  //handle the use of PUT or DELETE methods
-  //override with POST having ?_method=DELETE or
-  // ?_method=PUT
+  app.use(methodOverride()); 
+
   app.use(methodOverride("_method"));
-  //saveUninitialized - orces a session that is "uninitialized" to be saved to the store
-  //resave - forces the session to be saved back to the session store
-  // Configure the 'session' middleware
+ 
   app.use(
     session({
       saveUninitialized: true,
@@ -54,8 +48,11 @@ module.exports = function () {
       secret: config.sessionSecret,
     })
   );
-  //Configure Express to use EJS module as the default template engine
-  // Set the application view engine and 'views' folder
+  
+  app.get('/',(req,res)=>{
+    res.send("Hello Final Project")
+  });
+
   app.set("views", "./app/views");
   app.set("view engine", "ejs");
   app.engine("html", require("ejs").renderFile);
