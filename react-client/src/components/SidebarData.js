@@ -53,6 +53,12 @@ export const SidebarData = [
     accessiblity: "patient",
   },
   {
+    title: "Emergency Alert History",
+    icon: <DialerSipIcon />,
+    link: "/emergency",
+    accessiblity: "nurse",
+  },
+  {
     title: "Self Assessment",
     icon: <WbIncandescentIcon />,
     link: "/assessment",

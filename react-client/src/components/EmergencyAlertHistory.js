@@ -6,10 +6,10 @@ import { withRouter } from "react-router-dom";
 function EmergencyAlertHistory(props) {
     // patient list
     const [dataPatients, setPatientsData] = useState([]);
-    const apiUrlPatients = "http://localhost:3000/patients";
+    const apiUrlPatients = "http://localhost:5000/patients";
     // alert list
     const [data, setData] = useState([]);
-    const apiUrl = "http://localhost:3000/api/alerts";
+    const apiUrl = "http://localhost:5000/api/alerts";
     // loading
     const [showLoading, setShowLoading] = useState(true);
     const [showError, setShowError] = useState(false);

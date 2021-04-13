@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 function EmergencyAlertView(props) {
     // patient list
     const [dataPatients, setPatientData] = useState([]);
-    const apiUrlPatient = "http://localhost:3000/patients";
+    const apiUrlPatient = "http://localhost:5000/patients";
     // alert
     const [data, setData] = useState({
         _id: "",
@@ -15,7 +15,7 @@ function EmergencyAlertView(props) {
         created: null,
         unread: true,
     });
-    const apiUrl = "http://localhost:3000/api/alert/" + props.match.params.id;
+    const apiUrl = "http://localhost:5000/api/alert/" + props.match.params.id;
     // loading
     const [showLoading, setShowLoading] = useState(true);
     const [showError, setShowError] = useState(false);

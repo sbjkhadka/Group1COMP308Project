@@ -11,7 +11,7 @@ function EmergencyAlert(props) {
   });
   const [showLoading, setShowLoading] = useState(false);
   const [showError, setShowError] = useState(false);
-  const apiUrl = "http://localhost:3000/api/alert/create";
+  const apiUrl = "http://localhost:5000/api/alert/create";
 
   const saveAlert = (e) => {
 
