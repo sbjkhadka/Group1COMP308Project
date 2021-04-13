@@ -5,8 +5,6 @@ var users = require("../controllers/users.server.controller.js");
 var records = require("../controllers/records.server.controller.js");
 
 module.exports = function (app) {
- 
-
   app.post("/create", users.create);
   app.post("/login", users.authenticate);
   app.post("/checkIdAnyUserIsAlreadySignedIn", users.isSignedIn);
@@ -15,4 +13,5 @@ module.exports = function (app) {
   app.post("/myVitals", records.myVitals);
   app.post("/saveTips", records.saveTips);
   app.post("/readTips", records.myTips);
+  app.post("/predictHepatitis", users.trainAndPredictHepatitis);
 };

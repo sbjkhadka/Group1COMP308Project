@@ -5,6 +5,8 @@ import Table from "react-bootstrap/Table";
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
 import axios from "axios";
+import Card from "react-bootstrap/Card";
+import {ResourceList} from "./useFulResource";
 
 function Home() {
   
@@ -203,10 +205,18 @@ function Home() {
               </div>
             </div>
           ) : (
-            <div>
-              <img src="https://www.pngitem.com/pimgs/m/643-6437843_page-under-construction-oops-we-are-working-hd.png" /> <br />
-              Put some relevant content to make it look like a home page. Actually, this page does not serve any purpose
-              (Maybe some fact sheet that is required by nurses everyday)
+            <div className="d-flex flex-row flex-wrap justify-content-around">
+              {ResourceList.map((val, key) => {return (
+                <Card style={{ width: "10rem" }} className="m-3">
+                  <Card.Body>
+                    <Card.Title>
+                      <a href={val.link} target="_blank">
+                        {val.title}
+                      </a>
+                    </Card.Title>
+                  </Card.Body>
+                </Card>
+              );})}
             </div>
           )}
         </div>
