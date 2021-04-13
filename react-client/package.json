@@ -17,6 +17,7 @@
     "bootstrap": "^4.6.0",
     "cdbreact": "^1.1.0",
     "classnames": "^2.2.6",
+    "dotenv": "^8.2.0",
     "http-proxy-middleware": "^1.1.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
