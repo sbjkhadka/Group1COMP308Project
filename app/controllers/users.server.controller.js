@@ -120,7 +120,8 @@ exports.trainAndPredictHepatitis = function (req, res) {
   console.log("Prepare testingData: ", testingData);
 
   const tf = require('@tensorflow/tfjs');
-  require('@tensorflow/tfjs-node');
+  require("@tensorflow/tfjs");
+  // require('@tensorflow/tfjs-node');
   // load training data
   const hep = require('../../hep_train.json');
   // const hepTesting = require('../../hep_test.json');
