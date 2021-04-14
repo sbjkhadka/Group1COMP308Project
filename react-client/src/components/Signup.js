@@ -154,7 +154,7 @@ function Signup(props) {
               <Form.Group className="col-md-6">
                 <Form.Label className="topic-color">Password</Form.Label>
                 <Form.Control
-                  type="text"
+                  type="password"
                   name="password"
                   id="password"
                   placeholder="Password"
