@@ -9,7 +9,7 @@ const jwtKey = config.secretKey;
 
 
 exports.createVitals = (req, res) => {
-  console.log("recCon", req.body._id);
+  // console.log("recCon", req.body._id);
   const vital = new Vital();
   vital.temperature = req.body.temperature;
   vital.heartRate = req.body.heartRate;
@@ -35,9 +35,9 @@ exports.myVitals = (req, res) => {
   console.log('vitalsMy', req.body);
   Vital.find({patient: req.body.id}, (err, vitals) => {
       if (err) {
-        console.log("error happened", err);
+        // console.log("error happened", err);
       } else {
-        console.log("vitals_found", vitals);
+        // console.log("vitals_found", vitals);
         res.status(200).json(vitals);
       }
   });
@@ -68,9 +68,9 @@ exports.myTips = (req, res) => {
   console.log("tipsMy", req.body);
   Tips.find({ patient: req.body.patientId }, (err, tips) => {
     if (err) {
-      console.log("error happened", err);
+      // console.log("error happened", err);
     } else {
-      console.log("vitals_found", tips);
+      // console.log("vitals_found", tips);
       res.status(200).json(tips);
     }
   });

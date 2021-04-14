@@ -7,8 +7,13 @@ import Container from "react-bootstrap/Container";
 import axios from "axios";
 import Card from "react-bootstrap/Card";
 import {ResourceList} from "./useFulResource";
+import socketIOClient from "socket.io-client";
+import LocalHospitalIcon from "@material-ui/icons/LocalHospital";
+import WhatshotIcon from "@material-ui/icons/Whatshot";
+import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
 
 function Home() {
+ const [messages, setMessages] = useState([]);
   
   const [screen, setScreen] = useState(localStorage.getItem('screen') || "auth");
   const [credential, setcredential] = useState({
@@ -112,12 +117,27 @@ function Home() {
     } else if (screen === "patient") {
       readTips();
     }
+
+
+     const socket = socketIOClient("http://localhost:5001");
+ 
+     socket.on("message", (data) => {
+       setMessages(messages=>[...messages, data]);
+       console.log(messages);
+     });
+
+     socket.on("fire", (data) => {
+       setMessages((messages) => [...messages, data]);
+       console.log(messages);
+     });
+
+
     
   }, []); //only the first render
 
   
   return (
-    <div className="d-flex justify-content-around align-items-center h-100 p-5">
+    <div className="d-flex justify-content-around align-items-center h-100 mh-100 p-5">
       {screen === "auth" ? (
         <div className="w-25 border rounded p-5 form-background">
           <h1 className="topic-color d-flex justify-content-around rounded">
@@ -159,9 +179,9 @@ function Home() {
           </Form>
         </div>
       ) : (
-        <div className="w-100 h-100">
+        <div className="w-100 h-100 mh-100">
           {screen === "patient" ? (
-            <div className="d-flex flex-column justify-content-start h-100 align-self-top w-100">
+            <div className="d-flex flex-column justify-content-start h-100 mh-100 align-self-top w-100">
               <div className=" h-50 w-100">
                 <Jumbotron fluid>
                   <Container>
@@ -205,18 +225,37 @@ function Home() {
               </div>
             </div>
           ) : (
-            <div className="d-flex flex-row flex-wrap justify-content-around">
-              {ResourceList.map((val, key) => {return (
-                <Card style={{ width: "10rem" }} className="m-3">
-                  <Card.Body>
-                    <Card.Title>
-                      <a href={val.link} target="_blank">
-                        {val.title}
-                      </a>
-                    </Card.Title>
-                  </Card.Body>
-                </Card>
-              );})}
+            <div className="d-flex flex-column flex-wrap justify-content-around mh-100 overflow-auto">
+              {messages
+                .slice(0)
+                .reverse()
+                .map((val, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className={
+                        val.issue === "Fire"
+                          ? "bg-danger m-3 p-3 text-light border border-dark rounded"
+                          : val.issue === "Police"
+                          ? "bg-primary m-3 p-3 text-light border border-dark rounded"
+                          : "bg-light m-3 p-3 text-dark border border-dark rounded"
+                      }
+                    >
+                      {val.issue === "Fire" ? (
+                        <WhatshotIcon />
+                      ) : val.issue === "Police" ? (
+                        <PersonOutlineIcon />
+                      ) : (
+                        <LocalHospitalIcon />
+                      )}
+                      &nbsp;&nbsp;
+                      <span>
+                        {val.issue} ALERT from {val.patientName}
+                      </span>
+                      <br />
+                    </div>
+                  );
+                })}
             </div>
           )}
         </div>

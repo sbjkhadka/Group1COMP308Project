@@ -1,53 +1,4 @@
-// const express = require("express");
-// const config = require("./config");
-// const morgan = require("morgan");
-// const compress = require("compression");
-// const bodyParser = require("body-parser");
-// const methodOverride = require("method-override");
-// const session = require("express-session");
 
-// module.exports = () => {
-//   // Create a new express application instance
-//   const app = express();
-
-//   // Use NODE_ENV variable to activate morgan logger or compress middleware
-//   if (process.env.NODE_ENV === "development") {
-//     app.use(morgan("dev"));
-//   } else if (process.env.NODE_ENV === "development") {
-//     app.use(compress());
-//   }
-
-//   // Use body parser and method override middle ware functions
-//   app.use(bodyParser.urlencoded({ extended: true }));
-//   app.use(bodyParser.json());
-//   app.use(methodOverride());
-
-//   // Configure session middleware
-//   app.use(
-//     session({
-//       saveUninitialized: true,
-//       resave: true,
-//       secret: config.sessionSecret,
-//     })
-//   );
-
-//   // Set view engine and view folder, We don't require this but I am just keeping it here in case we need it for testing
-//   app.set("views", "./app/views");
-//   app.set("view engine", "ejs");
-//   app.engine("html", require("ejs").renderFile);
-
-//   // Configure static file serving __dirname + '/../app'
-//   // We don't require this but I am just keeping it here in case we need it for testing
-//   app.use(express.static("./public"));
-
-//   // Load index routing file
-//   require("../app/routes/user.server.routes.js")(app);
-//   // require("../app/routes/index.server.routes.js")(app);
-//   // require("../app/routes/display.server.routes.js")(app);
-
-//   // Return the instance of application
-//   return app;
-// };
 
 // Load the module dependencies
 var config = require("./config"),
@@ -59,6 +10,8 @@ var config = require("./config"),
   session = require("express-session");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+
+
 
 // Create a new Express application instance
 module.exports = function () {
@@ -119,6 +72,37 @@ module.exports = function () {
   //to determine the location of the static folder
   //Configure static file serving
   app.use(express.static("./public"));
+
+  // Conf related to Socket
+
+  // Configure socket
+  var http = require("http").createServer(app);
+  const io = require("socket.io")(http, {
+    cors: {
+      origin: "http://localhost:3000",
+      methods: ["GET", "POST"]
+    },
+  });
+  // var io = require("socket.io")(http);
+  http.listen(5001, () => {
+    console.log(`listening on *:${5001}`);
+  });
+
+  io.on("connection", (socket) => {
+    console.log('client connected');
+      socket.on("fire", (data) => {
+        io.emit("fire", data);
+      });
+      socket.on("medical", (data) => {
+        io.emit("fire", data);
+      });
+      socket.on("police", (data) => {
+        io.emit("fire", data);
+      });
+     
+  });
+ 
+
   return app;
 };
 
