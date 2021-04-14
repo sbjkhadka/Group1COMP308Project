@@ -20,19 +20,19 @@ exports.create = function (req, res, next) {
 
 exports.authenticate = function (req, res, next) {
   // Get credentials from request
-  console.log("body", req.body);
+  // console.log("body", req.body);
   const email = req.body.email;
   const password = req.body.password;
-  console.log(password);
-  console.log(email);
+  // console.log(password);
+  // console.log(email);
   //find the user with given username using static method findOne
   User.findOne({ email: email }, (err, user) => {
     if (err) {
-        console.log('error_happened');
+        // console.log('error_happened');
       return next(err);
     } else {
-      console.log('user_pwd',user.password);
-      console.log("_pwd", password);
+      // console.log('user_pwd',user.password);
+      // console.log("_pwd", password);
       //compare passwords
       if (user && bcrypt.compareSync(password, user.password)) {
         // Create a new token with the user id in the payload
@@ -42,7 +42,7 @@ exports.authenticate = function (req, res, next) {
           jwtKey,
           { algorithm: "HS256", expiresIn: jwtExpirySeconds }
         );
-        console.log("token:", token);
+        // console.log("token:", token);
         // set the cookie as the token string, with a similar max age as the token
         // here, the max age is in milliseconds
 
@@ -76,7 +76,7 @@ exports.authenticate = function (req, res, next) {
 
 exports.isSignedIn = (req, res) => {
   const token = req.body.authKey;
-  console.log("token_received", token);
+  // console.log("token_received", token);
   // if the cookie is not set, return 'auth'
   if (!token) {
     // console.log('no_token')
@@ -99,10 +99,10 @@ exports.isSignedIn = (req, res) => {
 };
 
 exports.getPatientList = (req, res) => {
-  console.log('getting patient list');
+  // console.log('getting patient list');
   User.find({userType:"patient"}, (err, users) => {
     if (err) {
-        console.log('error_happened');
+        // console.log('error_happened');
       return next(err);
     } else {
       res.status(200).send(users);
@@ -111,13 +111,13 @@ exports.getPatientList = (req, res) => {
 };
 
 exports.createVitals = (req, res) => {
-  console.log('recCon', req.body);
+  // console.log('recCon', req.body);
 };
 
 // AI functionality
 exports.trainAndPredictHepatitis = function (req, res) {
   const testingData = prepareTestingDataFromRequest(req.body);
-  console.log("Prepare testingData: ", testingData);
+  // console.log("Prepare testingData: ", testingData);
 
   const tf = require('@tensorflow/tfjs');
   require("@tensorflow/tfjs");
@@ -127,7 +127,7 @@ exports.trainAndPredictHepatitis = function (req, res) {
   // const hepTesting = require('../../hep_test.json');
 
   // tensor of features for training data
-  console.log('trainingData');
+  // console.log('trainingData');
   const trainingData = tf.tensor2d(hep.map(item => [
       item.Age,
       item.Sex,
@@ -224,7 +224,7 @@ exports.trainAndPredictHepatitis = function (req, res) {
       optimizer: tf.train.adam(.003),
       metrics: ['accuracy'],
   })
-  console.log(model.summary())
+  // console.log(model.summary())
   // train/fit the model for the fixed number of epochs
   const startTime = Date.now()
   //

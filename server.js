@@ -1,4 +1,4 @@
-// Configure PORT number
+//Configure PORT number
 const PORT = 5000;
 // Setting node environment variable
 process.env.NODE_ENV = process.env.NODE_ENV || "development";
